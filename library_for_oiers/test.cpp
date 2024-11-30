@@ -1,6 +1,7 @@
-#include "super_long.h"
+#include "slong.cpp"
+
+superll a=1145141919;
 
 int main() {
-    stdnum a=114514;
-    a.ret_multiply(104).printself();
+    a.show();
 }
