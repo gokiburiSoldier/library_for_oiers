@@ -1,7 +1,9 @@
 #include "slong.cpp"
+#include <iostream>
 
-superll a=1145141919;
+superll a=106;
 
 int main() {
-    a.show();
+    superll b = a.ret_multiply(10);
+    b.show();
 }

@@ -181,7 +181,7 @@ stdnum stdnum::ret_multiply(stdnum right) {
         tmp[i] %= 100;
     }
     int nlen=len;
-    for(int i=len-1;i>=0;--i) if(tmp[i]) continue; else --nlen;
+    for(int i=len-1;i>=0;--i) if(tmp[i]) break; else --nlen;
     len = nlen;
     for(int i=0;i<(len >> 1);i++) {
         tmp[i] ^= tmp[len-i-1];

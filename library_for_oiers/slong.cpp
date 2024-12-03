@@ -77,3 +77,41 @@ byte superll::mod_ten(void) {
     }
     return ret%10;
 }
+
+superll superll::ret_add(superll right) {
+    superll ret=0;
+    short tmp,more=0;
+    for(int i=0;i<STD_SIZE;i++) {
+        tmp = more+right.get(i)+record[i];
+        more = tmp >>8;
+        ret.push(tmp mod_256);
+    } 
+    return ret;
+}
+
+superll superll::ret_subtract(superll right) {
+    superll ret=0;
+    short tmp,less=0;
+    for(int i=0;i<STD_SIZE;i++) {
+        tmp=record[i]-right.get(i)-less;
+        less = tmp<0;
+        if(less) tmp += 255;
+        ret.push(tmp mod_256);
+    }
+    return ret;
+}
+
+superll superll::ret_multiply(superll right) {
+    byte result[(STD_SIZE << 1)+1]={};
+    int tmp;
+    for(int i=0;i<STD_SIZE;i++) {
+        for(int j=0;j<STD_SIZE;j++) {
+            tmp = record[i]*right.get(j)+result[i+j];
+            result[i+j] = tmp mod_256;
+            result[i+j+1] += tmp >> 8;
+        }
+    }
+    int len=(STD_SIZE << 1);
+    while(len && !result[len]) --len;
+    return superll(result,result+len+1);
+}
