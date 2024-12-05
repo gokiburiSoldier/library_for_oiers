@@ -1,9 +1,10 @@
-#include "slong.cpp"
 #include <iostream>
+#include "slong.cpp"
+using namespace std;
 
-superll a=106;
+superll a;
 
 int main() {
-    superll b = a.ret_multiply(10);
-    b.show();
+    str_to_hp("11257", &a);
+    a.show();
 }

@@ -113,5 +113,22 @@ superll superll::ret_multiply(superll right) {
     }
     int len=(STD_SIZE << 1);
     while(len && !result[len]) --len;
-    return superll(result,result+len+1);
+    return superll(result, result+len+1);
+}
+
+void str_to_hp(char* str,superll* num) {
+    int len=0;
+    short tmp=0;
+    for(;str[len];len++) {
+        tmp = (tmp << 1)+(tmp << 3)+(str[len]^48);
+        printf("tmp=%d\n",tmp);
+        while(tmp >= 256) {
+            num->push(tmp mod_256);
+            tmp >>= 8;
+        }
+    }
+    while(tmp) {
+        num->push(tmp mod_256);
+        tmp >>= 8;
+    }
 }
