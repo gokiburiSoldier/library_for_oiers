@@ -1,10 +1,14 @@
-FROM ghcr.io/gokiburisoldier/zshenv:latest 
+FROM ubuntu
 WORKDIR /root
 COPY lib ./lib
 COPY include ./include
+COPY sources.list .
 
-RUN ["apk","add","gcc","g++"]
-RUN echo "","alias g++='g++ -l/root/include '"
+RUN cat ./sources.list > /etc/apt/sources.list
 
-CMD ["/bin/zsh"]
+RUN apt-get update
+RUN apt install -y g++ gcc vim
+RUN echo "" "alias g++='g++ -I/root/include '">>.bashrc
+
+CMD ["/bin/bash"]
 
