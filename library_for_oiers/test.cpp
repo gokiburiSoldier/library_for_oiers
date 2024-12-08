@@ -5,6 +5,6 @@ using namespace std;
 superll a;
 
 int main() {
-    str_to_hp("11257", &a);
+    rcstr_to_ll("1711", &a, 4);
     a.show();
 }

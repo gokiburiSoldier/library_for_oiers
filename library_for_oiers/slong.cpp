@@ -1,6 +1,7 @@
 #include "slong.h"
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 
 superll::superll(void) {
     record = new byte[STD_SIZE]();
@@ -116,9 +117,22 @@ superll superll::ret_multiply(superll right) {
     return superll(result, result+len+1);
 }
 
-void str_to_hp(char* str,superll* num) {
-    int len=0;
+#if 0
+void str_memset(char* str,int size) {
+    for(int i=0;i<size && str[i];i++) str[i]=0;
+}
+void str_memcpy(char* str,int size,const char* src) {
+    for(int i=0;i<size && src[i];++i) str[i]=src[i];
+}
+#endif
+
+void rcstr_to_ll(char* str,superll* num,int size) {
+    if(size <= 0) return;
+    --size;
+    char n_str[size+1]={};
+    int len=0,indexns=0;
     short tmp=0;
+    #if 0
     for(;str[len];len++) {
         tmp = (tmp << 1)+(tmp << 3)+(str[len]^48);
         printf("tmp=%d\n",tmp);
@@ -127,8 +141,28 @@ void str_to_hp(char* str,superll* num) {
             tmp >>= 8;
         }
     }
-    while(tmp) {
-        num->push(tmp mod_256);
-        tmp >>= 8;
+    do {
+        indexns = 0;
+        for(len=0;len <= size;len++) {
+            tmp = (tmp << 1)+(tmp << 3)+(str[len]^48);
+            if(tmp >= 256) {
+                if(indexns || (tmp>>8)) n_str[indexns++]=(tmp>>8)^48;
+                tmp >>= 8;
+            }
+        }
+        num->push(tmp);
+        for(int i=0;i<indexns;i++) str[i] = n_str[i];
+        memset(n_str,0,size);
+    } while(*str);
+    #endif
+    for(int i=0;i<=size;++i) {
+        tmp = (tmp << 1)+(tmp << 3)+(str[i]^48);
+        if(tmp >= 256) {
+            if(indexns || (tmp>>8)) n_str[indexns++]=(tmp>>8)^48;
+            tmp modwith_256;
+        }
     }
+    num->push(tmp); /* 余数 */
+    printf("n_str=%s,tmp=%d\n",n_str,tmp);
+    rcstr_to_ll(n_str,num,indexns);
 }
