@@ -45,6 +45,6 @@ class superll {
         superll ret_multiply(superll);
 };
 
-void str_to_hp(char*,superll*);
+void rcstr_to_ll(char*,superll*);
 
 #endif 
