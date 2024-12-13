@@ -126,7 +126,7 @@ void str_memcpy(char* str,int size,const char* src) {
 }
 #endif
 
-void rcstr_to_ll(char* str,superll* num,int size) {
+void rcstr_to_ll(const char* str,superll* num,int size) {
     if(size <= 0) return;
     --size;
     char n_str[size+1]={};
@@ -163,6 +163,5 @@ void rcstr_to_ll(char* str,superll* num,int size) {
         }
     }
     num->push(tmp); /* 余数 */
-    printf("n_str=%s,tmp=%d\n",n_str,tmp);
     rcstr_to_ll(n_str,num,indexns);
 }
