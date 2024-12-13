@@ -16,8 +16,13 @@
 
 #ifndef _SLONG_II_H
 #define _SLONG_II_H 1 
+#include <bits/wordsize.h>
 
-#define STD_SIZE 48
+#if __WORDSIZE == 64
+  #define STD_SIZE 128
+#else
+  #define STD_SIZE 64
+#endif
 #define byte     unsigned char
 #define mod_256 &255
 #define modwith_256 &=255

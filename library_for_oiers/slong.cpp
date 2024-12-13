@@ -46,7 +46,7 @@ byte& superll::get(int index) const {
 
 void superll::show(void) const {
     superll tmp (record,stack_top);
-    static char str[888]={}; /* 一个随意的数字 */
+    static char str[STD_SIZE<<2]={}; /* 一个随意的数字 */
     int i=0;
     while(!tmp.is_zero()) {
         str[i++]=tmp.mod_ten() ^ 48;
@@ -61,7 +61,7 @@ bool superll::is_zero(void) {
 void superll::dev_ten(void) {
     short tmp=0,more=0;
     for(byte* i=stack_top-1;i >= record;--i) {
-        tmp = (more + *i)/10;
+        tmp = (more+*i)/10;
         more = (more+*i)%10 << 8;
         *i = tmp;
     }
@@ -130,7 +130,7 @@ void rcstr_to_ll(const char* str,superll* num,int size) {
     if(size <= 0) return;
     --size;
     char n_str[size+1]={};
-    int len=0,indexns=0;
+    int indexns=0;
     short tmp=0;
     #if 0
     for(;str[len];len++) {
@@ -164,4 +164,29 @@ void rcstr_to_ll(const char* str,superll* num,int size) {
     }
     num->push(tmp); /* 余数 */
     rcstr_to_ll(n_str,num,indexns);
+}
+
+void lpstr_to_ll(const char* cstr,superll* num,int size) {
+    --size;
+    char nstr[size+1]={},str[size+1]={};
+    strcpy(str,cstr);
+    int index=0;
+    short tmp=0;
+    while(1) {
+        for(int i=0;i<=size;++i) {
+            tmp = (tmp << 1)+(tmp << 3)+(str[i]^48);
+            if(tmp >= 256) {
+                if(index || (tmp>>8)) nstr[index++]=(tmp>>8)^48;
+                tmp modwith_256;
+            }
+        }
+        size = index-1;
+        index = 0;
+        strcpy(str, nstr);
+        memset(nstr,0,sizeof nstr);
+        // printf("tmp=%d,str=%s\n",tmp,str);
+        num->push(tmp); /* 余数 */
+        tmp = 0;
+        if(size < 0) break;
+    }
 }
